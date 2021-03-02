@@ -3,43 +3,72 @@ package com.ncs.springBootPractice.student;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
-@Entity
-@Table
+@Entity(name = "Student")
+@Table(name = "student",
+uniqueConstraints = {
+        @UniqueConstraint(name = "student_email_unique",columnNames = "email")
+})
 public class Student {
 
     @Id
     @SequenceGenerator(
             name = "student_sequence",
             sequenceName = "student_sequence",
-            allocationSize = 1
+            allocationSize = 1 //increment by 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "student_sequence"
     )
+    @Column(
+            name = "id",
+            updatable = false
+    )
     private Long id;
 
-    private String name;
+    @Column(
+            name = "first_name",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
+    private String firstName;
+
+    @Column(
+            name = "last_name",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
+    private String lastName;
 
     @Transient //derived from dob value
+    @Column(
+            name = "age",
+            nullable = false)
     private Integer age;
 
     private LocalDate dob;
 
+    @Column(
+            name = "email",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String email;
 
     public Student() {
     }
 
-    public Student(String name, LocalDate dob, String email) {
-        this.name = name;
+    public Student(String firstName, String lastName, LocalDate dob, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.dob = dob;
         this.email = email;
     }
 
-    public Student(Long id, String name, LocalDate dob, String email) {
+    public Student(Long id, String firstName, String lastName, LocalDate dob, String email) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.dob = dob;
         this.email = email;
     }
@@ -52,12 +81,20 @@ public class Student {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Integer getAge() {
@@ -88,7 +125,8 @@ public class Student {
     public String toString() {
         return "Student{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", age=" + age +
                 ", dob=" + dob +
                 ", email='" + email + '\'' +

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController //making a class a restful service
-@RequestMapping(path = "api/v1/student")
+@RequestMapping(path = "/v1/student")
 public class StudentController {
 
     private final StudentService _studentService;
@@ -33,9 +33,10 @@ public class StudentController {
     @PutMapping(path = "{studentId}")
     public void updateStudent(
             @PathVariable("studentId") Long studentId,
-            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
             @RequestParam(required = false) String email) {
-        _studentService.updateStudent(studentId, name, email);
+        _studentService.updateStudent(studentId, firstName,lastName, email);
     }
 
 }
